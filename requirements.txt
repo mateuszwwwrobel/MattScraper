@@ -23,7 +23,7 @@ MarkupSafe==1.0
 netifaces==0.10.4
 onboard==1.4.1
 pexpect==4.2.1
-Pillow==5.1.0
+Pillow==6.2.0
 post==2019.4.13
 psutil==5.4.2
 psycopg2==2.8.4
