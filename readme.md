@@ -1,3 +1,3 @@
 This is a web scraper which I call MattScraper.
 
-It helps me find a information which I look for. 
+Created with Django, Beautiful Soup and Materialize for front-end. 
