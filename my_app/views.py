@@ -29,7 +29,10 @@ def new_search(request):
         post_image_url = BASE_IMAGE_URL
 
         for prices in soup.select('li.lvprice'):
-            post_price = prices.find('span').text
+            data1 = prices.find('span').text
+            data2 = list(data1)
+            data3 = data2[6:]
+            post_price = (''.join(data3))
 
 
 
