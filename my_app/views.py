@@ -2,9 +2,10 @@ import requests
 from bs4 import BeautifulSoup
 from django.shortcuts import render
 from . import models
+import itertools
 
 BASE_CRAIGSLIST_URL = 'https://www.ebay.co.uk/sch/i.html?_from=R40&_nkw={}&_sacat=0&LH_BIN=1&_sop=10'
-BASE_IMAGE_URL = 'https://www.globalinnovationforum.com/wp-content/uploads/2014/03/ebay-logo.jpg'
+BASE_IMAGE_URL = 'https://i.ebayimg.com/{}/s-l225.jpg'
 
 
 def home(request):
@@ -19,20 +20,28 @@ def new_search(request):
     data = response.text
     soup = BeautifulSoup(data, features='lxml')
 
-#    post_listings = soup.find_all('li.lvprice', 'h3.lvtitle',)
-
+    post_listings = soup.find_all('li', {"class": "sresult"})
+    #print(post_listings)
     final_postings = []
 
-    for titles in soup.select("h3.lvtitle"):
-        post_title = titles.find('a')['title'].split('access ')[1]
-        post_url = titles.find('a').get('href')
-        post_image_url = BASE_IMAGE_URL
+    for post in post_listings:
+        post_title = post.find(('h3', {'class': 'lvtitle'})).text
+        post_url = post.find(('a', {'class': 'vip'})).get('href')
+        post_price = post.find('li', {'class': 'lvprice'}).text
 
-        for prices in soup.select('li.lvprice'):
-            data1 = prices.find('span').text
-            data2 = list(data1)
-            data3 = data2[6:]
-            post_price = (''.join(data3))
+        img_items = post.find('img').get('imgurl')
+
+        image_list = []
+
+        if img_items is not None:
+            image_list.append(img_items)
+        else:
+            continue
+        
+
+        post_image_link = str(image_list)
+        post_image_id = post_image_link.split('com/')[1].split('/s')[0]
+        post_image_url = BASE_IMAGE_URL.format(post_image_id)
 
 
 
@@ -44,3 +53,4 @@ def new_search(request):
     }
 
     return render(request, 'my_app/new_search.html', stuff_for_frontend)
+        
