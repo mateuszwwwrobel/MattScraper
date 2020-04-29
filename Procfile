@@ -1,1 +1,1 @@
-web: gunicorn matts-scraper.wsgi --log-file -
+web: gunicorn MattScraper.wsgi --log-file -
